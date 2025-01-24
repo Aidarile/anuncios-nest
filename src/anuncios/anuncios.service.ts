@@ -1,26 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAnuncioDto } from './dto/create-anuncio.dto';
 import { UpdateAnuncioDto } from './dto/update-anuncio.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Anuncio } from './entities/anuncio.entity';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class AnunciosService {
+
+  constructor(@InjectModel(Anuncio.name) private anuncioModel: Model<Anuncio>) {
+    }
+
   create(createAnuncioDto: CreateAnuncioDto) {
-    return 'This action adds a new anuncio';
+    const nuevoAnuncio = new this.anuncioModel(createAnuncioDto);
+    return nuevoAnuncio.save();
+    
   }
 
   findAll() {
-    return `This action returns all anuncios`;
+    return this.anuncioModel.find().select('titulo -_id').exec();
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} anuncio`;
+    return this.anuncioModel.findById(id).exec();
   }
 
   update(id: string, updateAnuncioDto: UpdateAnuncioDto) {
-    return `This action updates a #${id} anuncio`;
+    return this.anuncioModel.findByIdAndUpdate(id, updateAnuncioDto).exec();
   }
 
   remove(id: string) {
-    return `This action removes a #${id} anuncio`;
+    return this.anuncioModel.findByIdAndDelete(id).exec();
   }
+
 }

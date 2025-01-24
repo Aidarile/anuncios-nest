@@ -1,1 +1,5 @@
-export class CreateAnuncioDto {}
+export class CreateAnuncioDto {
+    titulo: string;
+    descripcion: string;
+    usuario: string;
+}
