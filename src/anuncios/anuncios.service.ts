@@ -18,8 +18,7 @@ export class AnunciosService {
   }
 
   findAll() {
-    return this.anuncioModel.find().exec();
-    // return this.anuncioModel.find().select('titulo -_id').exec();
+    return this.anuncioModel.find().select('titulo').exec();
   }
 
   findOne(id: string) {
